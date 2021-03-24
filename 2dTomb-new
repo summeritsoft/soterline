@@ -1,0 +1,158 @@
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main2dTomb {
+	
+	public static DecimalFormat df = new DecimalFormat("###,###.##");
+	/*
+	 * 
+	 * ITT HOZOM LÉTRE A FÜGGVÉNYEKET - ez jó projekt
+	 * 
+	 */
+		
+	//1. ÖSSZEAD ÉS ÁTLAGOL FÜGGVÉNY
+	public static int osszead(int atalakitFizu, String Tabla[][]) {
+		int darab = 0;
+		atalakitFizu = 0;
+		double atlag;
+		for(int i = 1; i < Tabla.length; i++) {
+			atalakitFizu = atalakitFizu + Integer.parseInt(Tabla[i][3]);
+			darab++;
+		}
+		System.out.println("A dolgozók fizetése összegezve: "+ df.format(atalakitFizu) + "Ft");
+		atlag = (double)atalakitFizu / (double)darab;
+		System.out.println("A dolgozók átlagfizetése: "+ df.format(atlag)+"Ft/fő");
+		return atalakitFizu;
+
+	}
+	//ÁTLAGNÁL KEVESEBBET KERESŐK LISTÁZÁSA FÜGGVÉNY
+	public static boolean atlagnalKevesebb(int atalakitFizu, String Tabla[][]) {
+		int darab = 0;
+		atalakitFizu = 0;
+		double atlag;
+
+		for(int i = 1; i < Tabla.length; i++) {
+			atalakitFizu = atalakitFizu + Integer.parseInt(Tabla[i][3]);
+			darab++;
+		}
+		atlag = (double)atalakitFizu / (double)darab;
+		
+		for(int i = 1; i < Tabla.length; i++) {
+			if(Integer.parseInt(Tabla[i][3]) < atlag) {
+				System.out.println(Tabla[i][0]+" "+Tabla[i][1]+" "+Tabla[i][2]+" "+ (Tabla[i][3])+" "+Tabla[i][4]);
+				}
+		}
+		return false;
+	}
+	
+	//BEKÉREM AZ ADOTT BEOSZTÁST ÉS KILISTÁZOM AZ EGYEZŐKET
+	
+	public static String kivalasztottBeosztas(String eztKeresem, String Tabla[][]) {
+		Scanner beolvas = new Scanner(System.in);
+		System.out.println("Kérem, adja meg melyen beosztású embereket keres (pl. Igazgató, Menedzser, Aszisztens stb.):");
+		//beolvas.nextLine();
+		
+		//eztKeresem = beolvas.nextLine();
+			
+		beolvas.close();
+		
+		System.out.println("A keresett beosztás: "+ eztKeresem);
+		
+		for(int i = 1; i < Tabla.length; i++) {
+			if(eztKeresem.equals(Tabla[i][1])) {
+				System.out.println(Tabla[i][0]+" "+Tabla[i][1]+" "+Tabla[i][2]+" "+ (Tabla[i][3])+" "+Tabla[i][4]);
+				} 
+				/*else if(!eztKeresem.equals(Tabla[i][1])) {
+					System.out.println("Sajnos nincs ilyen beosztású emberünk!");
+				}	*/
+		}		
+		
+		return null;
+	}
+	
+	
+	//SORBA RENDEZÉS FIZETÉS NAGYSÁGA SZERINT
+	
+	//======================================== ITT TRATOK
+	
+	public static int sorbaRendez(int fizuSorba, String Tabla[][]) {
+		int csere;
+		for( int i = 1; i < Tabla.length-1; i++ )
+		{
+		    for( int j = i+1; j < Tabla.length; j++ )
+		    {
+		        if( Integer.parseInt(Tabla[i][3]) < Integer.parseInt(Tabla[i+1][3]) )
+		        {
+		            csere = Integer.parseInt(Tabla[i][3]);
+		            Tabla[i] = Tabla[j];
+		            Tabla[j] = csere;
+		        }
+		    }
+		}
+		
+	}
+
+	//======================================== ITT TRATOK
+	
+	
+	/*
+	 * 
+	 * ITT VAN VÉGE AZ ÖSSZES FÜGGVÉNYNEK
+	 * 
+	 */
+
+	public static void main(String[] args) {
+		
+		//konzolról beolvasásás lehetősége
+		Scanner beolvas = new Scanner(System.in);
+		
+		//táblázat létrehozása
+		
+		int rows = 3; //fejléc + emberekSzama -> tehát min 3-at írj;		
+		
+		//intrukciók a User-nek
+		System.out.println("Adja meg a soronként egymás után az adatokat az alábbi sorrendben. Nyomjon 'entert' minden bevitt adat után:");
+		System.out.println("Név, Beosztás, SzülÉv, Fizetés, Végzettség");
+		System.out.println("-----ADATBEVITEL KEZDETE -----");
+		
+		String Tabla[][] = new String[rows][5];
+		
+		//létrehozom a fix fejlécet
+		Tabla[0][0] = "Név";
+		Tabla[0][1] = "Beosztás";
+		Tabla[0][2] = "SzülÉv";
+		Tabla[0][3] = "Fizetés";
+		Tabla[0][4] = "Végzettség";
+		
+		for(int i = 1; i< rows; i++ ) {
+			for(int j = 0; j<Tabla[i].length; j++) {
+				String ertek = beolvas.nextLine();
+				Tabla[i][j] = ertek;
+			}
+		}
+		
+		//lezárom az adatbevitelt
+		beolvas.close();
+		System.out.println("-----ADATBEVITEL VÉGE -----");
+		//kiírom struktúráltan a bevitt adatokat
+		System.out.println("A bevitt adatok a következők:");
+			for (String [] row : Tabla)
+			System.out.println(Arrays.toString(row));
+	
+		System.out.println("----------");
+		//meghívom az összead és átlagol függvényt
+			
+		osszead(0,Tabla);
+		
+		System.out.println("----------");
+		System.out.println("Az alábbi embereknek kisebb a fizetése az átlagnál:");
+		atlagnalKevesebb(0,Tabla);
+		
+		System.out.println("----------");
+		
+		kivalasztottBeosztas("b", Tabla);
+	
+	}
+
+}
