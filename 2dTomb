@@ -7,7 +7,7 @@ public class Main2dTomb {
 	public static DecimalFormat df = new DecimalFormat("###,###.##");
 	/*
 	 * 
-	 * ITT HOZOM LÉTRE A FÜGGVÉNYEKET
+	 * ITT HOZOM LÉTRE A FÜGGVÉNYEKET - ez jó projekt
 	 * 
 	 */
 		
